@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7199262806874678597}
   m_Layer: 0
   m_Name: inside_corner
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,6 +95,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1197065471624200968, guid: 64aa9220eda46564299b1b3682093f78, type: 3}

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5292718591127971882}
   m_Layer: 0
   m_Name: inside_bend
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,6 +95,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2072341812134015018, guid: bb79aac7c6f0c6a4bbd8589a398a1326, type: 3}

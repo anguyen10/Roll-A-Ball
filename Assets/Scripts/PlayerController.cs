@@ -6,15 +6,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("UI Stuff")]
+    public GameObject gameOverScreen;
     public float speed = 5.0f;
     private Rigidbody rb;
-    private int pickupCount;
+    private int countText;
     private Timer timer;
     private bool gameOver = false;
 
     [Header("UI")]
     public GameObject inGamePanel;
-    public GameObject winPanel;
+    public GameObject gameOverPanel;
     public TMP_Text scoreText;
     public TMP_Text timerText;
     public TMP_Text winTimeText;
@@ -24,16 +26,17 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         // get the number of pickups in scene
-        pickupCount = GameObject.FindGameObjectsWithTag("Pick Up").Length;
+        countText = GameObject.FindGameObjectsWithTag("Pick Up").Length;
+        gameOverScreen.SetActive(false);
         //run the check pickups function
-        CheckPickups();
+        SetCountText();
         //get the timer object
         timer = FindObjectOfType<Timer>();
         timer.StartTimer();
         // turnon our in game panel
         inGamePanel.SetActive(true);
         // turn off win panel
-        winPanel.SetActive(false);
+        gameOverPanel.SetActive(false);
     }
 
     private void Update()
@@ -60,18 +63,18 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(other.gameObject);
             //decrement the pickup count
-            pickupCount -= 1;
+            countText -= 1;
             //run the check pickups function
-            CheckPickups();
+            SetCountText();
         }
     }
 
-    void CheckPickups()
+    void SetCountText()
     {
         //display the amount of pckups left in our scene
-        scoreText.text = "Pickups Left: " + pickupCount;
+        scoreText.text = "Pickups Left: " + countText;
 
-        if (pickupCount == 0)
+        if (countText == 0)
         {
             WinGame();
         }
@@ -79,12 +82,15 @@ public class PlayerController : MonoBehaviour
 
     void WinGame()
     {
+        gameOverScreen.SetActive(true);
+        winTimeText.text = "Escape Successful!";
+
         //set game over to time
         gameOver = true;
         //stop the timer
         timer.StopTimer();
         // turn on win panel
-        winPanel.SetActive(true);
+        gameOverPanel.SetActive(true);
         // turn off our in game panel
         inGamePanel.SetActive(false);
         //display timer on the win time text
