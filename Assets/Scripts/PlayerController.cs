@@ -10,13 +10,20 @@ public class PlayerController : MonoBehaviour
     public GameObject gameOverScreen;
     public float speed = 5.0f;
     private Rigidbody rb;
-    private int countText;
+    private int pickupCount;
     private Timer timer;
     private bool gameOver = false;
+    GameObject resetPoint;
+    bool resetting = false;
+    Color originalColour;
+
+    //Controllers
+    CameraController cameraController;
 
     [Header("UI")]
     public GameObject inGamePanel;
     public GameObject gameOverPanel;
+    public GameObject pausePanel;
     public TMP_Text scoreText;
     public TMP_Text timerText;
     public TMP_Text winTimeText;
@@ -26,10 +33,17 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         // get the number of pickups in scene
-        countText = GameObject.FindGameObjectsWithTag("Pick Up").Length;
+        pickupCount = GameObject.FindGameObjectsWithTag("Pick Up").Length;
         gameOverScreen.SetActive(false);
         //run the check pickups function
         SetCountText();
+        winTimeText.text = "";
+        // get reset point
+        resetPoint = GameObject.Find("Reset Point");
+        originalColour = GetComponent<Renderer>().material.color;
+
+        cameraController = FindObjectOfType<CameraController>();
+
         //get the timer object
         timer = FindObjectOfType<Timer>();
         timer.StartTimer();
@@ -37,6 +51,7 @@ public class PlayerController : MonoBehaviour
         inGamePanel.SetActive(true);
         // turn off win panel
         gameOverPanel.SetActive(false);
+        Time.timeScale = 1;
     }
 
     private void Update()
@@ -50,11 +65,22 @@ public class PlayerController : MonoBehaviour
         if (gameOver == true)
             return;
 
+        if (resetting)
+            return;
+
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
         rb.AddForce(movement * speed);
+
+        if(cameraController.cameraStyle == CameraStyle.Free)
+        {
+            //rotate player to direction of camera
+            transform.eulerAngles = Camera.main.transform.eulerAngles;
+            //translates input vector into coordinates
+            movement = transform.TransformDirection(movement);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -63,18 +89,45 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(other.gameObject);
             //decrement the pickup count
-            countText -= 1;
+            pickupCount -= 1;
             //run the check pickups function
             SetCountText();
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Respawn"))
+        {
+            StartCoroutine(ResetPlayer());
+        }
+    }
+
+    public IEnumerator ResetPlayer()
+    {
+        // pause execution of code until resume
+        resetting = true;
+        GetComponent<Renderer>().material.color = Color.black;
+        rb.velocity = Vector3.zero;
+        Vector3 startPos = transform.position;
+        var i = 0.0f;
+        var rate = 1.0f;
+        while (i < 1.0f)
+        {
+            i += Time.deltaTime * rate;
+            transform.position = Vector3.Lerp(startPos, resetPoint.transform.position, i);
+            yield return null;
+        }
+        GetComponent<Renderer>().material.color = originalColour;
+        resetting = false;
+    }
+
     void SetCountText()
     {
         //display the amount of pckups left in our scene
-        scoreText.text = "Pickups Left: " + countText;
+        scoreText.text = "Pickups Left: " + pickupCount;
 
-        if (countText == 0)
+        if (pickupCount == 0)
         {
             WinGame();
         }
