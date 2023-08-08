@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     public float speed = 5.0f;
     private Rigidbody rb;
     private int pickupCount;
-    private Timer timer;
     private bool gameOver = false;
     GameObject resetPoint;
     bool resetting = false;
@@ -19,6 +18,8 @@ public class PlayerController : MonoBehaviour
 
     //Controllers
     CameraController cameraController;
+    GameController gameController;
+    Timer timer;
 
     [Header("UI")]
     public GameObject inGamePanel;
@@ -44,14 +45,23 @@ public class PlayerController : MonoBehaviour
 
         cameraController = FindObjectOfType<CameraController>();
 
+        gameController = FindObjectOfType<GameController>();
         //get the timer object
         timer = FindObjectOfType<Timer>();
+        if (gameController.gameType == GameType.SpeedRun)
+            StartCoroutine(timer.StartCountdown());
+
         timer.StartTimer();
         // turnon our in game panel
         inGamePanel.SetActive(true);
         // turn off win panel
         gameOverPanel.SetActive(false);
         Time.timeScale = 1;
+    }
+
+    private void StartCoroutine(IEnumerable enumerable)
+    {
+        throw new System.NotImplementedException();
     }
 
     private void Update()
@@ -62,6 +72,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (gameController.gameType == GameType.SpeedRun && !timer.IsTiming())
+            return;
+
         if (gameOver == true)
             return;
 
@@ -138,6 +151,9 @@ public class PlayerController : MonoBehaviour
         gameOverScreen.SetActive(true);
         winTimeText.text = "Escape Successful!";
 
+        if (gameController.gameType == GameType.SpeedRun)
+            timer.StopTimer();
+
         //set game over to time
         gameOver = true;
         //stop the timer
@@ -147,7 +163,7 @@ public class PlayerController : MonoBehaviour
         // turn off our in game panel
         inGamePanel.SetActive(false);
         //display timer on the win time text
-        winTimeText.text = "Your time was: " + timer.GetTime().ToString("F2");
+        winTimeText.text = "Your Time: " + timer.GetTime().ToString("F2");
 
         //set velocity of rigidbody to zero
         rb.velocity = Vector3.zero;
