@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     [Header("UI Stuff")]
     public GameObject gameOverScreen;
     public float speed = 5.0f;
+    [HideInInspector]
+    // for speed powerups
+    public float baseSpeed;
     private Rigidbody rb;
     private int pickupCount;
     private bool gameOver = false;
@@ -32,6 +35,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // base speed before speed powerup
+        baseSpeed = speed;
         rb = GetComponent<Rigidbody>();
         // get the number of pickups in scene
         pickupCount = GameObject.FindGameObjectsWithTag("Pick Up").Length;
@@ -57,11 +62,6 @@ public class PlayerController : MonoBehaviour
         // turn off win panel
         gameOverPanel.SetActive(false);
         Time.timeScale = 1;
-    }
-
-    private void StartCoroutine(IEnumerable enumerable)
-    {
-        throw new System.NotImplementedException();
     }
 
     private void Update()

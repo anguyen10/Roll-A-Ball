@@ -32,7 +32,7 @@ public class Timer : MonoBehaviour
         sceneController = FindObjectOfType<SceneController>();
     }
 
-    public IEnumerable StartCountdown()
+    public IEnumerator StartCountdown()
     {
         yield return new WaitForEndOfFrame();
         if (PlayerPrefs.HasKey("BestTime"))
