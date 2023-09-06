@@ -27,14 +27,14 @@ public class Powerup : MonoBehaviour
         if (myPowerup == PowerupType.SpeedDown)
             playerController.speed = playerController.baseSpeed / 3;
 
-        //if grow, increase size by 4
+        //if grow, increase size by 3
         // also need to moveup on y axis to avoid falling through ground
         if (myPowerup == PowerupType.Grow)
         {
             Vector3 temp = playerController.gameObject.transform.position;
             temp.y = 1;
             playerController.gameObject.transform.position = temp;
-            playerController.gameObject.transform.localScale = Vector3.one * 4;
+            playerController.gameObject.transform.localScale = Vector3.one * 3;
         }
 
         //if shrink, decrease size by 2

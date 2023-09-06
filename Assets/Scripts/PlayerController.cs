@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         //display the amount of pckups left in our scene
-        scoreText.text = "Pickups Left: " + pickupCount;
+        scoreText.text = "Keys Left: " + pickupCount;
 
         if (pickupCount == 0)
         {

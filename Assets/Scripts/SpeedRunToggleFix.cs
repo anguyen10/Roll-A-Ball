@@ -29,6 +29,8 @@ public class SpeedRunToggleFix : MonoBehaviour
             toggle.isOn = true;
         else
             toggle.isOn = false;
+
+        toggle.onValueChanged.AddListener((value) => gameController.ToggleSpeedRun(toggle.isOn));
     }
 
     // Update is called once per frame
