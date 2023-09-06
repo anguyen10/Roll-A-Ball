@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour
             // make pivot position follow player
             pivot.transform.position = player.transform.position + pivotOffset;
             //work out angle from mouse input as a quaternion
-            Quaternion turnAngle = Quaternion.AngleAxis(Input.GetAxis("Mouse X") * rotationSpeed, Vector3.up);
+            Quaternion turnAngle = Quaternion.AngleAxis(Input.GetAxis("Mouse Y") * rotationSpeed, Vector3.up);
             //modify offsetby the turn angle
             offset = turnAngle * offset;
             // set camera position to pivot plus offset

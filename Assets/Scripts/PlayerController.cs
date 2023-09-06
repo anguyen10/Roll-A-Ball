@@ -18,10 +18,11 @@ public class PlayerController : MonoBehaviour
     GameObject resetPoint;
     bool resetting = false;
     Color originalColour;
+    bool grounded = true;
 
     //Controllers
-    CameraController cameraController;
     GameController gameController;
+    CameraController cameraController;
     Timer timer;
 
     [Header("UI")]
@@ -48,9 +49,9 @@ public class PlayerController : MonoBehaviour
         resetPoint = GameObject.Find("Reset Point");
         originalColour = GetComponent<Renderer>().material.color;
 
+        gameController = FindObjectOfType<GameController>();
         cameraController = FindObjectOfType<CameraController>();
 
-        gameController = FindObjectOfType<GameController>();
         //get the timer object
         timer = FindObjectOfType<Timer>();
         if (gameController.gameType == GameType.SpeedRun)
@@ -72,28 +73,33 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (gameController.gameType == GameType.SpeedRun && !timer.IsTiming())
-            return;
-
-        if (gameOver == true)
-            return;
-
         if (resetting)
             return;
 
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        if (gameController.gameType == GameType.SpeedRun && !timer.IsTiming())
+            return;
 
-        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
-        rb.AddForce(movement * speed);
+        if (gameController.controlType == ControlType.WorldTilt)
+            return;
 
-        if(cameraController.cameraStyle == CameraStyle.Free)
-        {
+        if (grounded)
+        { 
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
+            Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+
+            if(cameraController.cameraStyle == CameraStyle.Free)
+            {
             //rotate player to direction of camera
             transform.eulerAngles = Camera.main.transform.eulerAngles;
             //translates input vector into coordinates
             movement = transform.TransformDirection(movement);
-        }
+            }
+        
+            rb.AddForce(movement * speed);
+        }   
+
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -105,6 +111,23 @@ public class PlayerController : MonoBehaviour
             pickupCount -= 1;
             //run the check pickups function
             SetCountText();
+        }
+
+        if (other.tag == "Light")
+        {
+            Destroy(other.gameObject);
+        }
+
+        if(other.gameObject.CompareTag("Powerup"))
+        {
+            other.GetComponent<Powerup>().UsePowerup();
+            other.gameObject.transform.position = Vector3.down * 1000;
+        }
+
+        if (other.gameObject.CompareTag("Powerup"))
+        {
+            other.GetComponent<Powerup>().UsePowerup();
+            other.gameObject.transform.position = Vector3.down * 1000;
         }
     }
 

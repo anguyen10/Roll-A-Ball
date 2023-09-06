@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -487,7 +487,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level 3
+  m_text: Tilt World
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ab6e4253fc911a3468f05d48ff825c9e, type: 2}
   m_sharedMaterial: {fileID: -5406781289846840170, guid: ab6e4253fc911a3468f05d48ff825c9e, type: 2}
@@ -1758,6 +1758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameType: 0
+  controlType: 0
 --- !u!4 &1398526275
 Transform:
   m_ObjectHideFlags: 0
@@ -2303,7 +2304,7 @@ GameObject:
   - component: {fileID: 2145217204}
   - component: {fileID: 2145217203}
   m_Layer: 5
-  m_Name: Level03
+  m_Name: Tilt Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2328,7 +2329,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -209.28001}
-  m_SizeDelta: {x: 300, y: 100}
+  m_SizeDelta: {x: 380, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2145217203
 MonoBehaviour:
@@ -2374,6 +2375,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1398526274}
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
+        m_MethodName: ToggleWorldTilt
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 1189403946}
         m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
         m_MethodName: ChangeScene
@@ -2383,7 +2396,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Level3Scene
+          m_StringArgument: TiltWorld
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2145217204

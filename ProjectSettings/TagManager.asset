@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - Wall
   - Powerup
+  - Hazard
+  - Light
   layers:
   - Default
   - TransparentFX
